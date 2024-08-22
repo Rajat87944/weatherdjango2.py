@@ -1,0 +1,73 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <style>
+        body {
+            background-image: url('https://nordicapis.com/wp-content/uploads/6-Best-Free-and-Paid-Weather-APIs.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 50px;
+        }
+        form {
+            margin: 20px auto;
+            width: 300px;
+        }
+        label, input, button {
+            display: block;
+            margin: 10px auto;
+            width: 100%;
+        }
+        p, h2 {
+            margin: 20px auto;
+            width: 300px;
+        }
+        .wikipedia-summary {
+            margin: 20px auto;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather</h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <label for="city">Enter City Name:</label>
+        <input type="text" id="city" name="city" required>
+        <button type="submit">Get Weather</button>
+        {% if temp %}
+            <button type="submit" name="download_pdf">Download PDF</button>
+        {% endif %}
+    </form>
+
+    {% if temp %}
+        <h2>Weather in {{ city }}</h2>
+        <p>Country Code: {{ country_code }}</p>
+        <p>Longitude: {{ longitude }}</p>
+        <p>Latitude: {{ latitude }}</p>    
+        <p>Temperature: {{ temp }} °C</p>
+        <p>Pressure: {{ pressure }} hPa</p>
+        <p>Humidity: {{ humidity }}%</p>
+        <p>Main: {{ main }}</p>
+        <p>Description: {{ description }}</p>
+        <img src="http://openweathermap.org/img/wn/{{ icon }}@2x.png" alt="Weather icon">
+        
+        <div class="wikipedia-summary">
+            <h2>About {{ city }}</h2>
+            <p><strong>{{ wikipedia_title }}</strong></p>
+            <p>{{ wikipedia_description }}</p>
+            <p><a href="{{ wikipedia_url }}" target="_blank">Read more on Wikipedia</a></p>
+        </div>
+    {% else %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>
